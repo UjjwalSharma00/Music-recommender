@@ -1,3 +1,5 @@
+# THIS IS THE RECOMMENDATION ENGINE 
+
 import numpy as np
 import pandas
 
@@ -78,23 +80,17 @@ class item_similarity_recommender_py():
     #Construct cooccurence matrix
     def construct_cooccurence_matrix(self, user_songs, all_songs):
             
-        ####################################
         #Get users for all songs in user_songs.
-        ####################################
         user_songs_users = []        
         for i in range(0, len(user_songs)):
             user_songs_users.append(self.get_item_users(user_songs[i]))
             
-        ###############################################
         #Initialize the item cooccurence matrix of size 
         #len(user_songs) X len(songs)
-        ###############################################
         cooccurence_matrix = np.matrix(np.zeros(shape=(len(user_songs), len(all_songs))), float)
            
-        #############################################################
         #Calculate similarity between user songs and all unique songs
         #in the training data
-        #############################################################
         for i in range(0,len(all_songs)):
             #Calculate unique listeners (users) of song (item) i
             songs_i_data = self.train_data[self.train_data[self.item_id] == all_songs[i]]
@@ -162,29 +158,21 @@ class item_similarity_recommender_py():
     #make recommendations
     def recommend(self, user):
         
-        ########################################
         #A. Get all unique songs for this user
-        ########################################
         user_songs = self.get_user_items(user)    
             
         print("No. of unique songs for the user: %d" % len(user_songs))
         
-        ######################################################
         #B. Get all unique items (songs) in the training data
-        ######################################################
         all_songs = self.get_all_items_train_data()
         
         print("no. of unique songs in the training set: %d" % len(all_songs))
          
-        ###############################################
         #C. Construct item cooccurence matrix of size 
         #len(user_songs) X len(songs)
-        ###############################################
         cooccurence_matrix = self.construct_cooccurence_matrix(user_songs, all_songs)
-        
-        #######################################################
+
         #D. Use the cooccurence matrix to make recommendations
-        #######################################################
         df_recommendations = self.generate_top_recommendations(user, cooccurence_matrix, all_songs, user_songs)
                 
         return df_recommendations
@@ -194,22 +182,16 @@ class item_similarity_recommender_py():
         
         user_songs = item_list
         
-        ######################################################
         #B. Get all unique items (songs) in the training data
-        ######################################################
         all_songs = self.get_all_items_train_data()
         
         print("no. of unique songs in the training set: %d" % len(all_songs))
          
-        ###############################################
         #C. Construct item cooccurence matrix of size 
         #len(user_songs) X len(songs)
-        ###############################################
         cooccurence_matrix = self.construct_cooccurence_matrix(user_songs, all_songs)
         
-        #######################################################
         #D. Use the cooccurence matrix to make recommendations
-        #######################################################
         user = ""
         df_recommendations = self.generate_top_recommendations(user, cooccurence_matrix, all_songs, user_songs)
          
